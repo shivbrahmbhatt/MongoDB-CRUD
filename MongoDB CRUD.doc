@@ -1,0 +1,151 @@
+Last login: Wed Apr  3 09:22:24 on ttys000
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+Shivs-MacBook-Pro:~ shivbrahmbhatt$ mongosh
+Current Mongosh Log ID:	660ea73e5b866c626f0e238c
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.2
+Using MongoDB:		7.0.7
+Using Mongosh:		2.2.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-04-01T11:41:07.366-04:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+   2024-04-01T11:41:07.366-04:00: You are running this process as the root user, which is not recommended
+   2024-04-01T11:41:07.366-04:00: This server is bound to localhost. Remote systems will be unable to connect to this server. Start the server with --bind_ip <address> to specify which IP addresses it should serve responses from, or with --bind_ip_all to bind to all interfaces. If this behavior is desired, start the server with --bind_ip 127.0.0.1 to disable this warning
+   2024-04-01T11:41:07.366-04:00: Soft rlimits for open file descriptors too low
+------
+
+test> use students
+switched to db students
+students> db.createCollection("courses")
+{ ok: 1 }
+students> db.courses.insertOne({
+... name: "Shiv Brahmbhatt",
+... description: "Student from Georgia State University",
+... startDate: Date(),
+... instructor:{
+... name: "Dr. Joseph",
+... email: "joseph@gsu.edu"
+... }
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('660ea96b5b866c626f0e238d')
+}
+students> db.courses.insertMany([
+... {
+... name: "Software Engineering-CTW",
+... description: "Course provdied by GSU",
+... startDate: new Date("01-13-2023"),
+... instructor: {
+... name: "William Johnson",
+... email: "johnson@gsu.edu"
+... },
+... {
+Uncaught:
+SyntaxError: Unexpected token (10:0)
+
+   8 | email: "johnson@gsu.edu"
+   9 | },
+> 10 | {
+     | ^
+  11 |
+
+students> db.courses.insertOne({
+... name: "Software Engineering-CTW",
+... ... description: "Course provdied by GSU",
+Uncaught:
+SyntaxError: Unexpected token, expected "," (3:15)
+
+  1 | db.courses.insertOne({
+  2 | name: "Software Engineering-CTW",
+> 3 | ... description: "Course provdied by GSU",
+    |                ^
+  4 |
+
+students> ... startDate: new Date("01-13-2023"),
+Uncaught:
+SyntaxError: Unexpected token (1:0)
+
+> 1 | ... startDate: new Date("01-13-2023"),
+    | ^
+  2 |
+
+students> ... instructor: {
+Uncaught:
+SyntaxError: Unexpected token (1:0)
+
+> 1 | ... instructor: {
+    | ^
+  2 |
+
+students> ... name: "William Johnson",
+Uncaught:
+SyntaxError: Unexpected token (1:0)
+
+> 1 | ... name: "William Johnson",
+    | ^
+  2 |
+
+students> db.courses.insertOne({
+... name: "Software Engineering-CTW",
+... description: "Course provdied by GSU",
+... startDate: new Date("01-13-2023"),
+... instructor: {
+... name: "William Johnson",
+... email: "johnson@gsu.edu"
+... }
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('660eabbd5b866c626f0e238e')
+}
+students> db.courses.updateOne(
+... { name: "Shiv Brahmbhatt" },
+... { $set: { description: "Web Programming courses provided by GSU, and Dr. Joseph is teaching this course." } }
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+students> db.courses.updateMany(
+... {},
+... { $set: { duration: 8 } }
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+students> db.courses.insertOne({
+... name: "Cloud Computing",
+... description: "Instructor Wi Peng",
+... startDate: Date(),
+... instructor:{
+... name: "Wi Peng",
+... email: "peng.gsu.edu"
+... }
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('660eb1325b866c626f0e238f')
+}
+students> db.courses.deleteOne(
+... { name: "Shiv Brahmbhatt" }
+... )
+{ acknowledged: true, deletedCount: 1 }
+MongoServerError: unknown operator: $1t
+students> db.courses.deleteMany(
+... { startDate: { $lt: new Date("01-15-2024") } }
+... )
+{ acknowledged: true, deletedCount: 1 }
+students> 
